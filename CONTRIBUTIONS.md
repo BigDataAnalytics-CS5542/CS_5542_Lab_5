@@ -33,19 +33,23 @@ CS5542 - Lab 5
 
 ### Member 2: Blake Simpson
 
-Responsibilities: - Design and implementation of ≥3 meaningful SQL
-queries\
-- Creation of application-facing views\
-- Join, aggregation, and time-based analytics\
-- Query validation and performance testing
+**Responsibilities:**
+- Designed and wrote three analytical SQL queries in `sql/03_queries.sql` targeting `APP.CHUNKS_V`
+- Q1 (Aggregation): Average word count per paper using `ARRAY_SIZE(SPLIT(CHUNK_TEXT, ' '))` as token proxy
+- Q2 (Join): Enriched all chunks with their paper's intro text via a CTE self-join on `DOC_ID`
+- Q3 (Complex): Ranked papers by total word volume using `RANK()` and `PERCENT_RANK()` window functions
+- Created `APP.DOC_SUMMARY` view (Extension) pre-aggregating per-paper chunk stats and content rank
+- Built Snowflake Dashboard "Lab 5" with 3 chart tiles visualizing each query result
 
-Evidence (PR/commits): - SQL query scripts\
-- View creation scripts\
-- Query performance validation commits
+**Evidence (PR/commits):**
+- `sql/03_queries.sql` — rewritten for actual schema (`APP.CHUNKS_V`, no TOKEN_COUNT column)
+- `APP.DOC_SUMMARY` view created in Snowflake
+- Snowflake Dashboard "Lab 5" (3 bar chart tiles)
 
-Tested: - Aggregation query results\
-- Join correctness\
-- Time-based filtering accuracy
+**Tested:**
+- All 3 queries verified running in Snowflake worksheet against live data (416 rows)
+- `APP.DOC_SUMMARY` view created and queryable
+- Dashboard tiles rendering correct bar charts
 
 ------------------------------------------------------------------------
 
