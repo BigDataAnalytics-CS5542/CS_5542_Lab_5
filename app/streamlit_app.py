@@ -115,7 +115,7 @@ SELECT
     MIN(LENGTH(CHUNK_TEXT))         AS MIN_CHUNK_LENGTH,
     MAX(LENGTH(CHUNK_TEXT))         AS MAX_CHUNK_LENGTH,
     SUM(LENGTH(CHUNK_TEXT))         AS TOTAL_TEXT_LENGTH
-FROM CS5542_LAB5_ROHAN_BLAKE_KENNETH.RAW.CHUNKS
+FROM CS5542_LAB5_ROHAN_BLAKE_KENNETH.APP.CHUNKS_V
 GROUP BY DOC_ID, SOURCE_FILE
 ORDER BY TOTAL_CHUNKS DESC
 LIMIT {limit};
@@ -134,7 +134,7 @@ SELECT
     COUNT(*)                                          AS CHUNKS_ON_PAGE,
     AVG(LENGTH(CHUNK_TEXT))                           AS AVG_CHUNK_LENGTH_ON_PAGE,
     RANK() OVER (PARTITION BY DOC_ID ORDER BY COUNT(*) DESC) AS PAGE_DENSITY_RANK
-FROM CS5542_LAB5_ROHAN_BLAKE_KENNETH.RAW.CHUNKS
+FROM CS5542_LAB5_ROHAN_BLAKE_KENNETH.APP.CHUNKS_V
 GROUP BY DOC_ID, SOURCE_FILE, PAGE
 ORDER BY DOC_ID, PAGE_DENSITY_RANK
 LIMIT {limit};
@@ -153,7 +153,7 @@ SELECT
     CHUNK_INDEX,
     LENGTH(CHUNK_TEXT)      AS CHAR_COUNT,
     CHUNK_TEXT
-FROM CS5542_LAB5_ROHAN_BLAKE_KENNETH.RAW.CHUNKS
+FROM CS5542_LAB5_ROHAN_BLAKE_KENNETH.APP.CHUNKS_V
 WHERE LENGTH(CHUNK_TEXT) < 200
 ORDER BY DOC_ID, PAGE, CHUNK_INDEX
 LIMIT {limit};
@@ -195,35 +195,35 @@ if st.button("Run"):
     # Reads the last RAG result stored in session state by the existing RAG
     # pipeline (expected key: "rag_result"). If none is present the section
     # is silently skipped — no RAG question box is added here.
-    st.subheader("RAG Evidence Chunks")
-    rag_result = st.session_state.get("rag_result")
+    # st.subheader("RAG Evidence Chunks")
+    # rag_result = st.session_state.get("rag_result")
 
-    if rag_result is None:
-        st.info("No RAG result in session. Run the RAG pipeline first to populate evidence.")
-    else:
-        evidence = rag_result.get("evidence", [])
-        if not evidence:
-            st.info("RAG result contains no evidence entries.")
-        else:
-            # Extract evidence_ids in ranked order (list is already ranked by pipeline)
-            ranked_ids = [e["evidence_id"] for e in evidence if e.get("evidence_id")]
+    # if rag_result is None:
+    #     st.info("No RAG result in session. Run the RAG pipeline first to populate evidence.")
+    # else:
+    #     evidence = rag_result.get("evidence", [])
+    #     if not evidence:
+    #         st.info("RAG result contains no evidence entries.")
+    #     else:
+    #         # Extract evidence_ids in ranked order (list is already ranked by pipeline)
+    #         ranked_ids = [e["evidence_id"] for e in evidence if e.get("evidence_id")]
 
-            st.caption(
-                f"Question: *{rag_result.get('question', 'N/A')}* | "
-                f"Faithfulness: {'✅' if rag_result.get('faithfulness_pass') else '❌'} | "
-                f"RAG Latency: {rag_result.get('latency_ms', 'N/A')} ms"
-            )
+    #         st.caption(
+    #             f"Question: *{rag_result.get('question', 'N/A')}* | "
+    #             f"Faithfulness: {'✅' if rag_result.get('faithfulness_pass') else '❌'} | "
+    #             f"RAG Latency: {rag_result.get('latency_ms', 'N/A')} ms"
+    #         )
 
-            try:
-                evidence_df = fetch_evidence_chunks(ranked_ids, passcode=mfa_passcode)
-                if evidence_df.empty:
-                    st.warning("No matching chunks found in APP.CHUNKS_V for the returned evidence IDs.")
-                else:
-                    st.dataframe(evidence_df, width='stretch')
-                    log_event(team, user, "RAG Evidence Fetch", 0, len(evidence_df), "")
-            except Exception as e:
-                st.error(f"Evidence fetch failed: {e}")
-                log_event(team, user, "RAG Evidence Fetch", 0, 0, str(e))
+    #         try:
+    #             evidence_df = fetch_evidence_chunks(ranked_ids, passcode=mfa_passcode)
+    #             if evidence_df.empty:
+    #                 st.warning("No matching chunks found in APP.CHUNKS_V for the returned evidence IDs.")
+    #             else:
+    #                 st.dataframe(evidence_df, width='stretch')
+    #                 log_event(team, user, "RAG Evidence Fetch", 0, len(evidence_df), "")
+    #         except Exception as e:
+    #             st.error(f"Evidence fetch failed: {e}")
+    #             log_event(team, user, "RAG Evidence Fetch", 0, 0, str(e))
 
 # ---------------------------------------------------------------------------
 # Logs preview (unchanged)

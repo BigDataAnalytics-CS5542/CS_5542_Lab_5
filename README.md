@@ -192,7 +192,7 @@ See **CONTRIBUTIONS.md** for detailed evidence and testing notes.
 
 ## Demo Video
 
-\[Insert Demo Link Here\]
+[\\[Insert Demo Link Here\\]](https://umsystem.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c298bdba-5cba-4a82-9fad-b3fc0050cc1a)
 
 ------------------------------------------------------------------------
 
