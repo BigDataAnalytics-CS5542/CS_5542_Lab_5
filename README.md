@@ -196,6 +196,22 @@ See **CONTRIBUTIONS.md** for detailed evidence and testing notes.
 
 ------------------------------------------------------------------------
 
+## Pipeline Diagram
+
+![Pipeline Diagram](image.png)
+
+------------------------------------------------------------------------
+
+## Screenshots
+
+![Enterable fields](image-1.png)
+
+![Query w/ row limiting](image-3.png)
+
+![Logs](image-4.png)
+
+------------------------------------------------------------------------
+
 ## Reflection
 
 This lab transformed our project into a structured cloud-backed system
